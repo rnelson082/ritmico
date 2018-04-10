@@ -1,0 +1,198 @@
+body {
+  display: flex;
+  justify-content: center;
+  font-family: 'Indie Flower';
+  color: white;
+  background-image: url('https://static.vecteezy.com/system/resources/previews/000/139/378/non_2x/vector-old-grunge-musical-notes-background.jpg');
+  background-size: cover;
+}
+
+h3 {
+  margin: 2px;
+  padding: 2px;
+}
+h2 {
+  text-decoration: underline;
+}
+
+#currentrating {
+  margin: 0;
+  align-self: center;
+}
+
+#dashboard {
+  margin: 50px;
+  width: 800px;
+  height: 300px;
+  border: 2px solid lightgrey;
+  box-shadow: 10px 20px 30px black;
+  /* overflow: hidden; */
+  border-radius: 10px;
+  /* z-index: -3; */
+}
+
+#line-chart-dashboard {
+  margin: 50px;
+  width: 800px;
+  height: 300px;
+  border: 2px solid lightgrey;
+  box-shadow: 10px 20px 30px black;
+  /* overflow: hidden; */
+  border-radius: 10px;
+  background-color: white;
+}
+
+
+.profile {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+.photo {
+  margin: 0px;
+  padding: 0px;
+  height: 100px;
+  width: 100px;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 50%;
+}
+.photo-container {
+  display: flex;
+  justify-content: center;
+}
+.name-container {
+  display: flex;
+  justify-content: center;
+}
+.name {
+  margin: 5px;
+  text-decoration: none;
+}
+.chart {
+  display: flex;
+  flex-direction: row;
+  width: 800px;
+  height: 300px;
+  align-items: flex-end;
+  border-radius: 10px;
+  background: white;
+}
+
+.bar {
+  font: 10px sans-serif;
+  width: 200px;
+  background-color: steelblue;
+  text-align: center;
+  padding: 3px;
+  margin: 1px;
+  color: white;
+  font-size: 20px;
+}
+
+.chart svg {
+  position: absolute;
+  background-color: white;
+  color: white;
+  border-radius: 10px;
+  /* font: 10px sans-serif;
+  width: 200px;
+  /* background-color: steelblue; */
+  /* text-align: center;
+  padding: 3px;
+  margin: 1px;
+  color: white;
+  font-size: 20px;  */
+}
+
+.studentform {
+  margin: 20px;
+  padding: 15px;
+  background-color: black;
+  border: 2px solid white;
+  border-radius: 10px;
+  box-shadow: 10px 20px 30px black;
+}
+
+.general-stats {
+  color: black;
+  margin: 50px;
+  padding: 10px;
+  background-image: url('https://thumbs.dreamstime.com/b/yellow-notepad-paper-lines-red-margin-background-part-sheet-page-notebook-lecture-blue-61116275.jpg');
+  background-size: cover;
+  border: 2px solid white;
+  border-radius: 10px;
+  box-shadow: 10px 20px 30px black;
+  width: 800px;
+}
+
+.line {
+    fill: none;
+    stroke: #ffab00;
+    stroke-width: 300;
+}
+
+g {
+  font-family: 'Indie Flower';
+  font-size: 20px;
+}
+
+g text {
+   background: white;
+   z-index:10;
+}
+
+.line:hover {
+  stroke: green;
+  transition: 0.2s;
+}
+
+.dot {
+    fill: #ffab00;
+    stroke: #fff;
+}
+
+.line-chart svg {
+  /* background-color: white; */
+  opacity: none;
+  border-radius: 10px;
+  border: 2px solid lightgrey;
+  /* box-shadow: 10px 20px 30px black; */
+  position: absolute;
+}
+
+
+path.line {
+  fill: none;
+  stroke: #666;
+  stroke-width: 1.5px;
+}
+
+path.area {
+  fill: #e7e7e7;
+}
+
+.axis {
+  shape-rendering: crispEdges;
+}
+
+.x.axis line {
+  stroke: #fff;
+}
+
+.x.axis .minor {
+  stroke-opacity: .5;
+}
+
+.x.axis path {
+  display: none;
+}
+
+.y.axis line, .y.axis path {
+  fill: none;
+  stroke: #000;
+}
+.guideline {
+  margin-right: 100px;
+  float: right;
+}

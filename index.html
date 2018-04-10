@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="chart_css.css">
+    <link href="https://fonts.googleapis.com/css?family=Indie+Flower" rel="stylesheet">
+  </head>
+    <body>
+      <script src="https://d3js.org/d3.v5.min.js"></script>
+
+      <div class="studentform">
+        <div class="profile">
+          <div class="photo-container">
+            <img class="photo" src="https://chicagoontheaisle.com/wp-content/uploads/2014/04/Clarinetist-Anthony-McGill-will-play-Mozart-and-Brahms-quintets-with-the-Pacifica-String-Quartet..jpg"/>
+          </div>
+          <div class="name-container">
+            <h2 class="name"></h2>
+          </div>
+          <h3 id="currentrating">Current rating</h3>
+        </div>
+        <form>
+          <h2 id="first-value">Preparation</h2>
+          <div>
+            <input type="radio" id="unprepared" value="1" name="preparation">
+              <label for="unprepared">None</label>
+            <input type="radio" id="somewhat-prepared" value="2" name="preparation">
+              <label for="somewhat-prepared">Some</label>
+            <input type="radio" id="prepared" value="3" name="preparation">
+              <label for="prepared">Completely</label>
+          </div>
+          <!-- <p id="score1"></p> -->
+
+          <h2 id="second-value">Attitude</h2>
+          <div>
+            <input type="radio" id="poor" value="1" name="attitude">
+              <label for="poor">Negative</label>
+            <input type="radio" id="steady" value="2" name="attitude">
+              <label for="steady">Steady</label>
+            <input type="radio" id="enthusiastic" value="3" name="attitude">
+              <label for="enthusiastic">Engaged</label>
+          </div>
+          <!-- <p id="score2"></p> -->
+
+          <h2 id="third-value">Fundamentals</h2>
+          <div>
+            <input type="radio" id="sloppy" value="1" name="fundamentals">
+              <label for="sloppy">Ignored</label>
+            <input type="radio" id="making progress" value="2" name="fundamentals">
+              <label for="making progress">Aware</label>
+            <input type="radio" id="solid" value="3" name="fundamentals">
+              <label for="solid">Solid</label>
+          </div>
+          <!-- <p id="score3"></p> -->
+
+          <h2 id="fourth-value">Growth</h2>
+          <div>
+            <input type="radio" id="regression" value="1" name="growth">
+              <label for="regression">Worse</label>
+            <input type="radio" id="same" value="2" name="growth">
+              <label for="same">Same</label>
+            <input type="radio" id="clear-growth" value="3" name="growth">
+              <label for="clear-growth">Better</label>
+          </div>
+          <!-- <p id="score4"></p> -->
+
+        <div>
+          <label><h2>Comments</h2></label>
+          <input type="text" name="comments"/>
+        </div>
+
+        <button type="submit">Submit Results</button>
+      </form>
+    </div>
+
+    <div class="right-component">
+      <div id="dashboard">
+        <div class="chart"></div>
+      </div>
+      <div id="line-chart-dashboard">
+        <div class="line-chart"></div>
+      </div>
+      <div class="general-stats">
+        <ul id="comments"></ul>
+        <h3 id="lessonstats">Lesson Stats</h3>
+        <!-- <h3 id="overallstats">Overall Stats</h3> -->
+      </div>
+    </div>
+      <script>
+      // make studio object too.  sample size, all students, studio growth, school/ensemble mass texts and emails.
+      document.addEventListener("DOMContentLoaded", function(){
+
+
+      const value1 = "Preparation";
+      const value2 = "Attitude";
+      const value3 = "Fundamentals";
+      const value4 = "Growth";
+      const currentStudent = {
+        name: "DemoStudent",
+        phone: "415-123-1234",
+        email: "demokid@gmail.com",
+        profilePic: "https://chicagoontheaisle.com/wp-content/uploads/2014/04/Clarinetist-Anthony-McGill-will-play-Mozart-and-Brahms-quintets-with-the-Pacifica-String-Quartet..jpg",
+        lessonDates: {
+                        day: "Wednesday",
+                        time: "5:00pm",
+                        occurrence: "Weekly"
+                      },
+        ratePerHour: 50,
+        grade: "11",
+        instrument: "bass clarinet",
+        parents: ["DemoDad", "DemoMom"],
+        school: "Demo High School",
+        ensembles: [
+                    {
+                      ensembleName: "DHS Symphonic Band",
+                      director: "Maestro Demo",
+                      contact: ["123@dhs.edu", "415-444-4444"]
+                    },
+                    {
+                      ensembleName: "Demo Youth Orchestra",
+                      director: "Demo Tilson Thomas",
+                      contact: ["123@dyo.edu", "415-333-4444"]
+                    }
+                   ],
+        ratings: [
+                    {
+                      value1: 2,
+                      value2: 1,
+                      value3: 2,
+                      value4: 2,
+                      total: 7,
+                      max: 12,
+                      comment: "Did well!",
+                      repertoire: "Mozart Concerto",
+                      paymentReceived: true,
+                      date: ""
+                    },
+                   {
+                      value1: 2,
+                      value2: 2,
+                      value3: 3,
+                      value4: 1,
+                      total: 8,
+                      max: 12,
+                      comment: "Needs to practice slowly.",
+                      repertoire: "Poulenc Sonata",
+                      paymentReceived: false,
+                      date: ''
+                    }
+                  ]
+                    // totalValue1: [2,2,3,1,2,3,2,1],
+                    // totalValue2: [1,2,3,3,3,3,2,1],
+                    // totalValue3: [2,3,2,1,1,3,2,1],
+                    // totalValue4: [2,1,1,2,2,3,1,2],
+                    // // allComments: ["...x8"],
+                    // totalOverall:
+                 // }
+          // recordings: {
+          //   "4/18/18": concerto.ogg,
+          //   "5/19/18": scales.ogg,
+          //   "6/6/18": allstate.mp3
+
+      }
+
+      console.log(currentStudent.ratings)
+      var form = document.querySelector("form");
+      var log = document.querySelector("#log");
+      var total = document.querySelector("#total");
+      var max = document.querySelector("#max");
+      var nameHeader = document.querySelector(".name");
+      var headerItem = document.createElement("h3");
+      var lessonDate = new Date().toLocaleDateString();
+      headerItem.innerText = currentStudent.name;
+      nameHeader.appendChild(headerItem);
+      // nameHeader.addClass(".name")
+      // var followThrough = [];
+      // var maintenance = [];
+      // var inspiration = [];
+      // var improvement = [];
+
+      // function makeLines(){
+      var percentages = [0.0, (1+2+3+1)/12];
+
+      var margin = {top: 50, right: 50, bottom: 50, left: 50}
+        , width = 700 // Use the window's width
+        , height = 200; // Use the window's height
+
+      // The number of datapoints
+      var n = 8;
+
+      // 5. X scale will use the index of our data
+      var xScale = d3.scaleLinear()
+          .domain([0, n-1]) // input
+          .range([0, width]); // output
+
+      // 6. Y scale will use the randomly generate number
+      var yScale = d3.scaleLinear()
+          .domain([0, 1]) // input
+          .range([height, 0]); // output
+
+      // 7. d3's line generator
+      var line = d3.line()
+          .x(function(d, i) { return xScale(i); }) // set the x values for the line generator
+          .y(function(d) { return yScale(d.y); }) // set the y values for the line generator
+          .curve(d3.curveMonotoneX) // apply smoothing to the line
+
+      // 8. An array of objects of length N. Each object has key -> value pair, the key being "y" and the value is a random number
+
+        // percentages.push(0.2);
+        // percentages.push(0.7)
+      var dataset = d3.range(percentages.length).map(function(d) {
+        return { "y": percentages[d] }
+      })
+
+      // 1. Add the SVG to the page and employ #2
+      var svg = d3.select(".line-chart").append("svg")
+          .attr("width", "800px")
+          .attr("height", "300px")
+          .style("overflow", "hidden")
+        .append("g")
+          .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+          .text("Weekly Progress")
+          .style("color","black")
+
+      // 3. Call the x axis in a group tag
+      svg.append("g")
+          .attr("class", "x axis")
+          .attr("transform", "translate(0," + height + ")")
+          .call(d3.axisBottom(xScale)); // Create an axis component with d3.axisBottom
+
+      // 4. Call the y axis in a group tag
+      svg.append("g")
+          .attr("class", "y axis")
+          .call(d3.axisLeft(yScale)); // Create an axis component with d3.axisLeft
+
+      // 9. Append the path, bind the data, and call the line generator
+      svg.append("path")
+          .datum(dataset) // 10. Binds data to the line
+          .attr("class", "line") // Assign a class for styling
+          .attr("d", line) // 11. Calls the line generator
+
+      // 12. Appends a circle for each datapoint
+      svg.selectAll(".dot")
+          .data(dataset)
+          .enter().append("circle").transition()
+          // .duration(750)
+          .delay(function(d, i) { return i * 200; })// Uses the enter().append() method
+          .attr("class", "dot") // Assign a class for styling
+          .attr("cx", function(d, i) { return xScale(i) })
+          .attr("cy", function(d) { return yScale(d.y) })
+          .attr("r", 5);
+
+          var curtain = svg.append('rect')
+              .attr('x', -1 * width)
+              .attr('y', -1 * height)
+              .attr('height', height)
+              .attr('width', width)
+              .attr('class', 'curtain')
+              .attr('transform', 'rotate(180)')
+              .style('fill', '#ffffff');
+
+          var guideline = svg.append('line')
+              .attr('stroke', '#333')
+              .attr('stroke-width', 0)
+              .attr('class', 'guide')
+              .attr('x1', 1)
+              .attr('y1', 1)
+              .attr('x2', 1)
+              .attr('y2', height)
+
+          var t = svg.transition()
+              // .delay(750)
+              .duration(8000)
+              .ease(d3.easeLinear)
+              .on('end', function() {
+                d3.select('line.guide')
+                  .transition()
+                  .style('opacity', 0)
+                  .remove()
+              });
+          //
+          t.select('rect.curtain')
+            .attr('width', 0);
+          t.select('line.guide')
+            .attr('transform', 'translate(' + width + ', 0)')
+
+          d3.select(".line-chart").on("change", function(e) {
+            guideline.attr('stroke-width', this.checked ? 1 : 0);
+            curtain.attr("opacity", this.checked ? 0.75 : 1);
+          });
+
+// create filter with id #drop-shadow
+var defs = svg.append("defs")
+// height=130% so that the shadow is not clipped
+var filter = defs.append("filter")
+    .attr("id", "drop-shadow")
+    .attr("height", "130%");
+
+// SourceAlpha refers to opacity of graphic that this filter will be applied to
+// convolve that with a Gaussian with standard deviation 3 and store result
+// in blur
+filter.append("feGaussianBlur")
+    .attr("in", "SourceAlpha")
+    .attr("stdDeviation", 5)
+    .attr("result", "blur");
+
+// translate output of Gaussian blur to the right and downwards with 2px
+// store result in offsetBlur
+filter.append("feOffset")
+    .attr("in", "blur")
+    .attr("dx", 5)
+    .attr("dy", 5)
+    .attr("result", "offsetBlur");
+
+// overlay original SourceGraphic over translated blurred opacity by using
+// feMerge filter. Order of specifying inputs is important!
+var feMerge = filter.append("feMerge");
+
+feMerge.append("feMergeNode")
+    .attr("in", "offsetBlur")
+feMerge.append("feMergeNode")
+    .attr("in", "SourceGraphic");
+
+
+      var predata = [{preparation: 33},{attitude: 66},{fundamentals: 99},{growth: 33}]
+
+
+
+      var margin1 = { top: 50, right: 50, bottom: 50, left: 50 };
+      var width1 = 700;
+      var height1 = 200;
+
+
+      var svg1 = d3.select('.chart')
+        .append('svg')
+
+      .attr("width", "800px")
+      .attr("height", "300px")
+      .style("overflow", "hidden")
+        .append("g")
+      .attr("transform", "translate(" + margin1.left + "," + margin1.top + ")")
+
+      var xScale1 = d3.scaleBand()
+        .domain(predata.map(d => {
+          return Object.keys(d)[0]
+        }))
+        .range([0, width1])
+        .padding(0.2);
+      svg1.append('g')
+      .attr("class", "x axis")
+      .attr("transform", "translate(0," + height1 + ")")
+        .call(d3.axisBottom(xScale1));
+
+
+      var yScale1 = d3.scaleLinear()
+        .domain([0, 100])
+        .range([height1, 0]);
+
+      svg1.append('g')
+        .call(d3.axisLeft(yScale1));
+
+      //
+
+        var update = svg1.selectAll('rect')
+          .data(predata);
+        update.exit()
+          .remove();
+        update.attr('y', d => {
+          yScale1(Object.keys(d)[0])
+        })
+        .attr('height', d => {
+            return height1 - yScale1(Object.values(d)[0])
+          });
+
+        update.enter()
+          .append('rect')
+            .attr('x', d => xScale1(Object.keys(d)[0]))
+            .attr('y', height1)
+            .attr('width', d => xScale1.bandwidth())
+            .attr('height', 0)
+          .transition()
+            .duration(750)
+            .ease(d3.easeLinear)
+            .on("start", function(d){ console.log("transiton start") })
+            .on("end", function(d){ console.log("transiton end") })
+            .delay(function(d, i) { return i * 200; })
+            // .style("font-family","Indie Flower")
+            .attr('y', d => yScale1(Object.values(d)[0]))
+            .attr('height', d => {
+                    return height1 - yScale1(Object.values(d)[0])
+                })
+            .attr("fill", function(d){
+                if(Object.values(d)[0]/33 === 1){
+                  return "salmon"
+                } else if (Object.values(d)[0]/33 === 2) {
+                  return "gold"
+                } else if (Object.values(d)[0]/33 === 3) {
+                  return "teal"
+                }
+              })
+              .style("filter", "url(#drop-shadow)")
+              .text(function(d) {return Object.keys(d)[0]});
+
+          // .style("box-shadow", function(d){
+          //     if(Object.values(d)[0]/33 === 1){
+          //       return "6px 7px 8px red"
+          //     } else if (Object.values(d)[0]/33 === 2) {
+          //       return "6px 7px 8px orange"
+          //     } else if (Object.values(d)[0]/33 === 3) {
+          //       return "6px 7px 8px steelblue"
+          //     }
+          //   });
+      // render()
+  //   }
+  //   newBars();
+
+      form.addEventListener("submit", function(event) {
+        var data = new FormData(form);
+        var output = "";
+        var dataHash = {};
+        const lessonValues = [];
+        const lessonObjects = [];
+        for (const entry of data) {
+          // console.log(entry)
+          //array only
+          dataHash[entry[0]] = entry[1];
+          lessonValues.push(parseInt(entry[1]));
+
+          //full object
+          let newObj = {};
+          newObj[entry[0]] = parseInt(entry[1]) * 33
+          lessonObjects.push(newObj);
+
+          //each new percentage inserted
+        };
+        currentStudent.ratings.push(dataHash)
+        // console.log("currentStudent rating: ", currentStudent)
+        // console.log("lessonObjects: ", lessonObjects)
+        var len = currentStudent.ratings.length;
+
+        var comment = `${lessonDate}: ${dataHash.comments}`;
+        var commentList = document.getElementById("comments");
+        var listedComment = document.createElement("li");
+        var lessonData = lessonValues.slice(0,4).map(el=> parseInt(el));
+        var totalScore = lessonData.reduce((acc,el)=> acc + el);
+        var maxScore = lessonData.length * 3;
+        var finalScore = totalScore/maxScore;
+        var lineChartLabel = document.querySelector(".line-chart");
+        // console.log("current percentages", percentages)
+        // console.log(finalScore)
+        percentages.push(totalScore/maxScore)
+
+        // console.log(lessonData)
+        //displayed data:
+        if (dataHash.comments.length > 0){
+          listedComment.innerText = comment;
+          commentList.appendChild(listedComment);
+        }
+          lessonstats.innerText = `Lesson Stats: ${totalScore}/${maxScore}`;
+        currentrating.innerText = `${(totalScore/maxScore)*100}`.slice(0,5) + `%`;
+
+        var objs = lessonObjects.slice(0,4)
+        console.log(objs)
+
+
+
+        var margin1 = { top: 50, right: 50, bottom: 50, left: 50 };
+        var width1 = 700;
+        var height1 = 200;
+
+
+        var svg1 = d3.select('.chart')
+          .append('svg')
+            .attr("width", "800px")
+            .attr("height", "300px")
+            .style("overflow", "hidden")
+          .append("g")
+            .attr("transform", "translate(" + margin1.left + "," + margin1.top + ")")
+        //     .attr('width', "800px")
+        defs = svg1.append("defs")
+        // height=130% so that the shadow is not clipped
+        filter = defs.append("filter")
+        .attr("id", "drop-shadow")
+        .attr("height", "130%");
+
+        // SourceAlpha refers to opacity of graphic that this filter will be applied to
+        // convolve that with a Gaussian with standard deviation 3 and store result
+        // in blur
+        filter.append("feGaussianBlur")
+        .attr("in", "SourceAlpha")
+        .attr("stdDeviation", 5)
+        .attr("result", "blur");
+
+        // translate output of Gaussian blur to the right and downwards with 2px
+        // store result in offsetBlur
+        filter.append("feOffset")
+        .attr("in", "blur")
+        .attr("dx", 5)
+        .attr("dy", 5)
+        .attr("result", "offsetBlur");
+
+        // overlay original SourceGraphic over translated blurred opacity by using
+        // feMerge filter. Order of specifying inputs is important!
+        feMerge = filter.append("feMerge");
+
+        feMerge.append("feMergeNode")
+        .attr("in", "offsetBlur")
+        feMerge.append("feMergeNode")
+        .attr("in", "SourceGraphic");
+
+        var xScale1 = d3.scaleBand()
+          .domain(objs.map(d => {
+            return Object.keys(d)[0]
+          }))
+          .range([0, width1])
+          .padding(0.2);
+        svg1.append('g')
+        .attr("class", "x axis")
+        .attr("transform", "translate(0," + height1 + ")")
+          .call(d3.axisBottom(xScale1));
+
+        var yScale1 = d3.scaleLinear()
+          .domain([0, 100])
+          .range([height1, 0]);
+
+        svg1.append('g')
+          .call(d3.axisLeft(yScale1));
+
+          var update = svg1.selectAll('rect')
+            .data(objs);
+          update.exit()
+            .remove();
+          update.attr('y', d => {
+            console.log(d)
+            yScale1(Object.keys(d)[0])
+          })
+            .attr('height', d => {
+                console.log(d)
+                return height1 - yScale1(Object.values(d)[0])
+              });
+          update.enter()
+            .append('rect')
+            .attr('x', d => xScale1(Object.keys(d)[0]))
+            .attr('y', height1)
+            .attr('width', d => xScale1.bandwidth())
+            .attr('height', 0)
+            .transition()
+            .duration(750)
+            .delay(function(d, i) { return i * 200; })
+            .style("font-family","Indie Flower")
+            .attr('y', d => yScale1(Object.values(d)[0]))
+            .attr('height', d => {
+                    return height1 - yScale1(Object.values(d)[0])
+                })
+            .style("fill", function(d){
+                if(Object.values(d)[0]/33 === 1){
+                  return "salmon"
+                } else if (Object.values(d)[0]/33 === 2) {
+                  return "gold"
+                } else if (Object.values(d)[0]/33 === 3) {
+                  return "teal"
+                }
+              })
+            .style("filter", "url(#drop-shadow)")
+            .text(function(d) {return Object.keys(d)[0]});
+
+
+
+
+
+
+      // 2. Use the margin11 convention practice
+var margin = {top: 50, right: 50, bottom: 50, left: 50}
+  , width = 700 // Use the window's width
+  , height = 200; // Use the window's height
+
+// The number of datapoints
+var n = 8;
+
+// 5. X scale will use the index of our data
+var xScale = d3.scaleLinear()
+    .domain([0, n-1]) // input
+    .range([0, width]); // output
+
+// 6. Y scale will use the randomly generate number
+var yScale = d3.scaleLinear()
+    .domain([0, 1]) // input
+    .range([height, 0]); // output
+
+// 7. d3's line generator
+var line = d3.line()
+    .x(function(d, i) { return xScale(i); }) // set the x values for the line generator
+    .y(function(d) { return yScale(d.y); }) // set the y values for the line generator
+    // .curve(d3.curveMonotoneX) // apply smoothing to the line
+
+// 8. An array of objects of length N. Each object has key -> value pair, the key being "y" and the value is a random number
+
+  // percentages.push(0.2);
+  // percentages.push(0.7);
+  // percentages.push(0.4);
+var dataset = d3.range(percentages.length).map(function(d) {
+  // console.log(d,percentages, percentages[d])
+  return { "y": percentages[d] }
+})
+
+// 1. Add the SVG to the page and employ #2
+var svg = d3.select(".line-chart").append("svg")
+    .attr("width", "800px")
+    .attr("height", "300px")
+    .style("overflow", "hidden")
+  .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+    .text("Weekly Progress")
+    .style("color","black")
+
+// 3. Call the x axis in a group tag
+svg.append("g")
+    .attr("class", "x axis")
+    .attr("transform", "translate(0," + height + ")")
+    .call(d3.axisBottom(xScale)); // Create an axis component with d3.axisBottom
+
+// 4. Call the y axis in a group tag
+svg.append("g")
+    .attr("class", "y axis")
+    .call(d3.axisLeft(yScale)); // Create an axis component with d3.axisLeft
+
+// 9. Append the path, bind the data, and call the line generator
+svg.append("path")
+    .datum(dataset) // 10. Binds data to the line
+    .attr("class", "line") // Assign a class for styling
+    .attr("d", line) // 11. Calls the line generator
+
+// 12. Appends a circle for each datapoint
+svg.selectAll(".dot")
+    .data(dataset)
+    .enter().append("circle").transition()
+    // .duration(750)
+    .delay(function(d, i) { return i * 200; })// Uses the enter().append() method
+    .attr("class", "dot") // Assign a class for styling
+    .attr("cx", function(d, i) { return xScale(i) })
+    .attr("cy", function(d) { return yScale(d.y) })
+    .attr("r", 5);
+
+    var curtain = svg.append('rect')
+        .attr('x', -1 * width)
+        .attr('y', -1 * height)
+        .attr('height', height)
+        .attr('width', width)
+        .attr('class', 'curtain')
+        .attr('transform', 'rotate(180)')
+        .style('fill', '#ffffff');
+
+    var guideline = svg.append('line')
+        .attr('stroke', '#333')
+        .attr('stroke-width', 0)
+        .attr('class', 'guide')
+        .attr('x1', 1)
+        .attr('y1', 1)
+        .attr('x2', 1)
+        .attr('y2', height)
+
+    var t = svg.transition()
+        // .delay(750)
+        .duration(8000)
+        .ease(d3.easeLinear)
+        .on('end', function() {
+          d3.select('line.guide')
+            .transition()
+            .style('opacity', 0)
+            .remove()
+        });
+    //
+    t.select('rect.curtain')
+      .attr('width', 0);
+    t.select('line.guide')
+      .attr('transform', 'translate(' + width + ', 400)');
+
+    d3.select(".line-chart").on("change", function(e) {
+      guideline.attr('stroke-width', this.checked ? 1 : 0);
+      curtain.attr("opacity", this.checked ? 0.75 : 1);
+    });
+
+    document.querySelector('input[name="preparation"]:checked').checked = false;
+    document.querySelector('input[name="attitude"]:checked').checked = false;
+    document.querySelector('input[name="fundamentals"]:checked').checked = false;
+    document.querySelector('input[name="growth"]:checked').checked = false;
+    // document.getElementByName("preparation").checked = false;
+    // document.getElementByName("attitude").checked = false;
+    // document.getElementByName("fundamentals").checked = false;
+    // document.getElementByName("growth").checked = false;
+    event.preventDefault();
+  }, false);
+});
+      </script>
+
+    </body>
+</html>
