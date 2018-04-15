@@ -3,6 +3,9 @@
   <head>
     <link rel="stylesheet" href="chart_css.css">
     <link href="https://fonts.googleapis.com/css?family=Indie+Flower" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src='https://cdn.rawgit.com/admsev/jquery-play-sound/master/jquery.playSound.js'></script>
+    <title>Ritmico</title>
   </head>
     <body>
       <script src="https://d3js.org/d3.v5.min.js"></script>
@@ -418,12 +421,13 @@ feMerge.append("feMergeNode")
         var dataHash = {};
         const lessonValues = [];
         const lessonObjects = [];
+        const toneVal = []
         for (const entry of data) {
           // console.log(entry)
           //array only
           dataHash[entry[0]] = entry[1];
           lessonValues.push(parseInt(entry[1]));
-
+          toneVal.push(entry[1])
           //full object
           let newObj = {};
           newObj[entry[0]] = parseInt(entry[1]) * 33
@@ -460,7 +464,90 @@ feMerge.append("feMergeNode")
         var objs = lessonObjects.slice(0,4)
         console.log(objs)
 
+        // var audio = document.querySelector(".playSound").play();
+        var num = 4;
+        console.log(toneVal)
+          document.getElementById(toneVal[0]).loop = false
+          document.getElementById(toneVal[0]).play()
+          document.getElementById(toneVal[1]).loop = false
+          document.getElementById(toneVal[1]).play()
+          // document.getElementById(toneVal[2]).loop = false
+          // document.getElementById(toneVal[2]).play()
+          // document.getElementById(toneVal[3]).loop = false
+          // document.getElementById(toneVal[3]).play()
 
+        // document.getElementById("1").pause()
+
+        // In browsers that don’t yet support this functionality,
+        // // playPromise won’t be defined.
+        // if (audio !== undefined) {
+        //   audio.then(function() {
+        //     // Automatic playback started!
+        //   }).catch(function(error) {
+        //     // Automatic playback failed.
+        //     // Show a UI element to let the user manually start playback.
+        //   });
+        // }
+
+
+  // const soundValues = lessonValues.slice(0)
+  // function changeColors(){
+  //   //next time, figure out async, this is gross
+  //   window.setTimeout(() => {
+  //     const sounds = {
+  //         1: "https://freesound.org/people/dwengomes/sounds/409512/download/409512__dwengomes__piano-ff-c7-audiotrimmer-com.mp3",
+  //         2: "https://freesound.org/people/dwengomes/sounds/409468/download/409468__dwengomes__piano-ff-e6-audiotrimmer-com.mp3",
+  //         3: "https://freesound.org/people/dwengomes/sounds/409507/download/409507__dwengomes__piano-ff-a6-audiotrimmer-com.mp3",
+  //         4: "https://freesound.org/people/dwengomes/sounds/409494/download/409494__dwengomes__piano-ff-g6-audiotrimmer-com.mp3"
+  //     }
+  //
+  //
+  //
+  //
+  //
+  //     // var pan1 = document.querySelector('.panel1')
+  //     // var pan2 = document.querySelector('.panel2')
+  //     // var pan3 = document.querySelector('.panel3')
+  //     // var pan4 = document.querySelector('.panel4')
+  //     // var id = soundValues.shift()
+  //     // var playMySound = sounds[id]
+  //     // $.playSound(playMySound);
+  //     //
+  //     // //   "1": pan1,
+  //     //   "2": pan2,
+  //     //   "3": pan3,
+  //     //   "4": pan4
+  //     // }
+  //     // var colorChanges = {
+  //     //   "1": "red",
+  //     //   "2": "blue",
+  //     //   "3": "green",
+  //     //   "4": "yellow",
+  //     // };
+  //     // var originalColors = {
+  //     //   "1" : "darkred",
+  //     //   "2" : "darkblue",
+  //     //   "3" : "darkgreen",
+  //     //   "4" : "gold"
+  //     // }
+  //
+  //
+  //
+  //     setTimeout(()=>{
+  //       console.log(id)
+  //
+  //       // pan[id].style.backgroundColor = originalColors[id]
+  //     },500)
+  //
+  //     if(soundValues.length-1 > 0){
+  //       return changeColors();
+  //     } else {
+  //       return
+  //     }
+  //   }, 500)
+  // }
+  //
+  // changeColors();
 
         var margin1 = { top: 50, right: 50, bottom: 50, left: 50 };
         var width1 = 700;
@@ -690,6 +777,10 @@ svg.selectAll(".dot")
   }, false);
 });
       </script>
+      <audio src='https://freesound.org/people/dwengomes/sounds/409512/download/409512__dwengomes__piano-ff-a6-audiotrimmer-com.mp3' id="1" hidden='true' autostart='true' loop='false' class='playSound'/>
+      <audio src='https://freesound.org/people/dwengomes/sounds/409468/download/409468__dwengomes__piano-ff-g6-audiotrimmer-com.mp3' id="2" hidden='true' autostart='true' loop='false' class='playSound'/>
+      <audio src='https://freesound.org/people/dwengomes/sounds/409507/download/409507__dwengomes__piano-ff-c7-audiotrimmer-com.mp3' id="3" hidden='true' autostart='true' loop='false' class='playSound'/>
+      <audio src='https://freesound.org/people/dwengomes/sounds/409494/download/409494__dwengomes__piano-ff-g6-audiotrimmer-com.mp3' id="4" hidden='true' autostart='true' loop='false' class='playSound'/>
 
     </body>
 </html>
